@@ -11,40 +11,28 @@ import random
 
 
 def proof_of_work(last_proof):
-    """
-    Multi-Ouroboros of Work Algorithm
-    - Find a number p' such that the last six digits of hash(p) are equal
-    to the first six digits of hash(p')
-    - IE:  last_hash: ...AE9123456, new hash 123456888...
-    - p is the previous proof, and p' is the new proof
-    - Use the same method to generate SHA-256 hashes as the examples in class
-    """
-
     start = timer()
 
     print("Searching for next proof")
     proof = 0
-    #  TODO: Your code here
+
+    while valid_proof(last_proof, proof):
+        proof += 1
 
     print("Proof found: " + str(proof) + " in " + str(timer() - start))
     return proof
 
 
 def valid_proof(last_hash, proof):
-    """
-    Validates the Proof:  Multi-ouroborus:  Do the last six characters of
-    the hash of the last proof match the first six characters of the hash
-    of the new proof?
+    guess = f"{last_hash}{proof}".encode()
+    # hashing the guess
+    guess_hash = hashlib.sha256(guess).hexdigest()
 
-    IE:  last_hash: ...AE9123456, new hash 123456E88...
-    """
-
-    # TODO: Your code here!
-    pass
+    print('Old guess', last_hash)
+    print('New guess', guess_hash[0:6])
 
 
 if __name__ == '__main__':
-    # What node are we interacting with?
     if len(sys.argv) > 1:
         node = sys.argv[1]
     else:
